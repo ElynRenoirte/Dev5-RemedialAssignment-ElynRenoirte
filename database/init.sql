@@ -31,3 +31,11 @@ CREATE TABLE reports (
         REFERENCES users(id)
 
 );
+
+CREATE TABLE categories (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT,
+
+);
