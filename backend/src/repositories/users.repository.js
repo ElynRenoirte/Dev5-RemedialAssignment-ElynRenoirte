@@ -1,5 +1,7 @@
+//repositories communicate with the database
 const pool = require("../config/database");
 
+//retrieves every user from the users table
 async function findAll() {
 	const [rows] = await pool.query(
 		"SELECT id, name, email, created_at FROM users ORDER BY name"

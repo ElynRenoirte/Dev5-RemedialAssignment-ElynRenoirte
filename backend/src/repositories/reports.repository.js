@@ -1,5 +1,6 @@
 const pool = require("../config/database");
 
+//stores columns as constant
 const REPORT_COLUMNS = `
 	r.id, r.user_id, r.category_id, r.person_id, r.description,
 	r.latitude, r.longitude, r.direction, r.created_at,
@@ -36,6 +37,7 @@ async function findByUser(userId) {
 	return rows;
 }
 
+//insert new report
 async function create(report) {
 	const [result] = await pool.query(
 		`INSERT INTO reports

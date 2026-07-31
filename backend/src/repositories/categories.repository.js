@@ -1,3 +1,4 @@
+//retrieves all the categories from the catergories table
 const pool = require("../config/database");
 
 async function findAll() {

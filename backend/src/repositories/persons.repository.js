@@ -1,3 +1,4 @@
+//retrieves all persons from the table persons
 const pool = require("../config/database");
 
 async function findAll() {

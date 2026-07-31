@@ -1,3 +1,4 @@
+//defines URL's (endpoints) for reports and connects each URL to the correct controller function
 const express = require("express");
 const controller = require("../controllers/reports.controller");
 const { validateId } = require("../middleware/validation");

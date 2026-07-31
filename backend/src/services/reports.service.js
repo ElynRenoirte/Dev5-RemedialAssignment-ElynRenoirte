@@ -4,10 +4,12 @@ const categoriesRepository = require("../repositories/categories.repository");
 const personsService = require("./persons.service");
 const { httpError } = require("../utils/httpError");
 
+//get all reports
 async function getAll() {
 	return reportsRepository.findAll();
 }
 
+//get a report and throw 404 if missing
 async function getById(id) {
 	const report = await reportsRepository.findById(id);
 	if (!report) {
@@ -16,7 +18,7 @@ async function getById(id) {
 	return report;
 }
 
-// Checks the referenced rows exist before inserting, so bad data never reaches the DB.
+//checks the referenced rows exist before inserting, so bad data never reaches the DB.
 async function create(reportData) {
 	if (!(await usersRepository.findById(reportData.userId))) {
 		throw httpError(400, "Referenced user does not exist");

@@ -1,5 +1,7 @@
-const COMPASS_PATTERN = /^[NSEW]{1,2}$/;
+//validating incoming data before it is saved to the database or used by the application
+const COMPASS_PATTERN = /^[NSEW]{1,2}$/; //checks if directions only contain NSEW
 
+//validating latitude, longitude and email
 function isValidLatitude(value) {
 	return Number.isFinite(value) && value >= -90 && value <= 90;
 }
@@ -23,6 +25,7 @@ function validateId(req, res, next) {
 	next();
 }
 
+//validates new user
 function validateUser(body) {
 	const errors = [];
 	const name = typeof body.name === "string" ? body.name.trim() : "";
@@ -38,6 +41,7 @@ function validateUser(body) {
 	return { errors, value: { name, email } };
 }
 
+//validates neighborhood report
 function validateReport(body) {
 	const errors = [];
 	const userId = Number(body.userId);
@@ -76,6 +80,7 @@ function validateReport(body) {
 	};
 }
 
+//validates categories
 function validateCategory(body) {
 	const errors = [];
 	const name = typeof body.name === "string" ? body.name.trim().toLowerCase() : "";
@@ -87,6 +92,7 @@ function validateCategory(body) {
 	return { errors, value: { name } };
 }
 
+//validates persons (if name exists and max 100 characters)
 function validatePerson(body) {
 	const errors = [];
 	const name = typeof body.name === "string" ? body.name.trim() : "";
