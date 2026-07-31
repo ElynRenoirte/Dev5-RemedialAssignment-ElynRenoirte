@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   frontend:
     build: ./frontend
@@ -12,30 +10,29 @@ services:
     build: ./backend
     ports:
       - "3000:3000"
-
     env_file:
-      - .env.template
-
+      - .env
     depends_on:
-      - mysql
-
+      mysql:
+        condition: service_healthy
     volumes:
       - ./backend:/app
 
   mysql:
     image: mysql:8
-
     restart: always
-
     env_file:
-      - .env.template
-
+      - .env
     ports:
       - "3306:3306"
-
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 volumes:
   mysql_data:
