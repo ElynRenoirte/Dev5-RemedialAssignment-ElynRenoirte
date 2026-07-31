@@ -19,8 +19,8 @@ services:
     depends_on:
       - mysql
 
-    #volumes:
-    # - ./backend:/app
+    volumes:
+      - ./backend:/app
 
   mysql:
     image: mysql:8
