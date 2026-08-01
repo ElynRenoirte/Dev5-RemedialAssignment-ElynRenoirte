@@ -1,127 +1,130 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background: #f4f4f5;
-    color: #18181b;
+	font-family:
+		system-ui,
+		-apple-system,
+		sans-serif;
+	background: #f4f4f5;
+	color: #18181b;
 }
 
 .header {
-    background: #1e293b;
-    color: #f8fafc;
-    padding: 1.25rem 1.5rem;
+	background: #f7e6c2;
+	color: #000000;
+	padding: 1.25rem 1.5rem;
 }
 
 .header h1 {
-    font-size: 1.5rem;
+	font-size: 1.5rem;
 }
 
 .header p {
-    font-size: 0.9rem;
-    opacity: 0.8;
+	font-size: 0.9rem;
+	opacity: 0.8;
 }
 
 .layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1.25rem;
-    padding: 1.25rem;
-    max-width: 1200px;
-    margin: 0 auto;
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: 1.25rem;
+	padding: 1.25rem;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
 .map-panel,
 .side-panel > section {
-    background: #ffffff;
-    border: 1px solid #d4d4d8;
-    border-radius: 8px;
-    padding: 1rem;
+	background: #ffffff;
+	border: 1px solid #d4d4d8;
+	border-radius: 8px;
+	padding: 1rem;
 }
 
 .side-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
 }
 
 .map-panel h2,
 .side-panel h2 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
+	font-size: 1.1rem;
+	margin-bottom: 0.75rem;
 }
 
 .map-placeholder {
-    height: 480px;
-    background: #e4e4e7;
-    border: 2px dashed #a1a1aa;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #71717a;
+	height: 480px;
+	background: #e4e4e7;
+	border: 2px dashed #a1a1aa;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #71717a;
 }
 
 .report-form label,
 .report-form fieldset label {
-    display: block;
-    margin-top: 0.75rem;
-    margin-bottom: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+	display: block;
+	margin-top: 0.75rem;
+	margin-bottom: 0.25rem;
+	font-size: 0.85rem;
+	font-weight: 600;
 }
 
 .report-form input,
 .report-form select,
 .report-form textarea {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #d4d4d8;
-    border-radius: 4px;
-    font-size: 0.9rem;
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid #d4d4d8;
+	border-radius: 4px;
+	font-size: 0.9rem;
 }
 
 .report-form fieldset {
-    border: 1px solid #d4d4d8;
-    border-radius: 4px;
-    padding: 0.75rem;
-    margin-top: 0.75rem;
+	border: 1px solid #d4d4d8;
+	border-radius: 4px;
+	padding: 0.75rem;
+	margin-top: 0.75rem;
 }
 
 .report-form button {
-    margin-top: 1rem;
-    width: 100%;
-    padding: 0.6rem;
-    background: #1e293b;
-    color: #f8fafc;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.95rem;
-    cursor: pointer;
+	margin-top: 1rem;
+	width: 100%;
+	padding: 0.6rem;
+	background: #1e293b;
+	color: #f8fafc;
+	border: none;
+	border-radius: 4px;
+	font-size: 0.95rem;
+	cursor: pointer;
 }
 
 .report-form button:hover {
-    background: #334155;
+	background: #334155;
 }
 
 .report-list {
-    list-style: none;
-    max-height: 360px;
-    overflow-y: auto;
+	list-style: none;
+	max-height: 360px;
+	overflow-y: auto;
 }
 
 .report-list li {
-    padding: 0.6rem 0;
-    border-bottom: 1px solid #e4e4e7;
-    font-size: 0.9rem;
+	padding: 0.6rem 0;
+	border-bottom: 1px solid #e4e4e7;
+	font-size: 0.9rem;
 }
 
 .footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.8rem;
-    color: #71717a;
+	text-align: center;
+	padding: 1rem;
+	font-size: 0.8rem;
+	color: #71717a;
 }
