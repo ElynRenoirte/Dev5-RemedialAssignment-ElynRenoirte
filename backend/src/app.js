@@ -39,7 +39,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Retry until MySQL is reachable, so the backend survives mysql's slow startup.
+//retry until MySQL is reachable, so the backend survives mysql's slow startup.
 async function waitForDatabase(retries = 20) {
 	for (let attempt = 1; attempt <= retries; attempt++) {
 		try {

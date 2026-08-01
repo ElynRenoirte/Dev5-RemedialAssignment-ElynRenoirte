@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:3000/api";
 
+//building the map
 const map = L.map("map").setView([51.05, 3.72], 13);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -10,6 +11,7 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 const reportLayer = L.layerGroup().addTo(map);
 
+//adds dot when report is submitted
 function addReportDot(report) {
 	const lat = Number(report.latitude);
 	const lng = Number(report.longitude);
@@ -38,6 +40,7 @@ function fitBoundsToReports() {
 	}
 }
 
+//loads reports
 async function loadReports() {
 	const res = await fetch(`${API_URL}/reports`);
 	if (!res.ok) {
@@ -48,6 +51,7 @@ async function loadReports() {
 	fitBoundsToReports();
 }
 
+//loads categories
 async function loadCategories() {
 	const res = await fetch(`${API_URL}/categories`);
 	if (!res.ok) {
