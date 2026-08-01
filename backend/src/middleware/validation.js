@@ -28,6 +28,7 @@ function validateId(req, res, next) {
 //validates new user
 function validateUser(body) {
 	const errors = [];
+	body = body || {};
 	const name = typeof body.name === "string" ? body.name.trim() : "";
 	const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
 
@@ -44,6 +45,7 @@ function validateUser(body) {
 //validates neighborhood report
 function validateReport(body) {
 	const errors = [];
+	body = body || {};
 	const userId = Number(body.userId);
 	const categoryId = body.categoryId != null ? Number(body.categoryId) : null;
 	const personName = typeof body.personName === "string" ? body.personName.trim() : "";
@@ -83,6 +85,7 @@ function validateReport(body) {
 //validates categories
 function validateCategory(body) {
 	const errors = [];
+	body = body || {};
 	const name = typeof body.name === "string" ? body.name.trim().toLowerCase() : "";
 
 	if (!name || name.length < 2 || name.length > 50) {
@@ -95,6 +98,7 @@ function validateCategory(body) {
 //validates persons (if name exists and max 100 characters)
 function validatePerson(body) {
 	const errors = [];
+	body = body || {};
 	const name = typeof body.name === "string" ? body.name.trim() : "";
 
 	if (!name || name.length > 100) {
