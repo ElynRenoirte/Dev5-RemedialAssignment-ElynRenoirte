@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Neighborhood Watch</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body>
@@ -15,9 +16,7 @@
 		<main class="layout">
 			<section class="map-panel">
 				<h2>Map</h2>
-				<div id="map" class="map-placeholder">
-					<p>Map placeholder</p>
-				</div>
+				<div id="map" class="map-placeholder"></div>
 			</section>
 
 			<aside class="side-panel">
@@ -61,5 +60,7 @@
 				</section>
 			</aside>
 		</main>
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+		<script src="js/app.js"></script>
 	</body>
 </html>
