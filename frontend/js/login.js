@@ -1,3 +1,4 @@
+//login page
 const API_URL = "http://localhost:3000/api";
 
 document.getElementById("login-form").addEventListener("submit", async (event) => {
