@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login - Neighborhood Watch</title>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<header class="header">
+			<div>
+				<h1>Neighborhood Watch</h1>
+				<p>Register and follow sightings in your neighborhood</p>
+			</div>
+		</header>
+
+		<main class="login-page">
+			<section class="login-card">
+				<h2>Login</h2>
+				<p></p>
+				<form id="login-form">
+					<label for="login-name">Your name</label>
+					<input type="text" id="login-name" name="name" minlength="2" maxlength="100" required />
+					<button type="submit">Continue</button>
+					<p id="login-error" class="error" hidden></p>
+				</form>
+			</section>
+		</main>
+
+		<script src="js/login.js"></script>
+	</body>
+</html>

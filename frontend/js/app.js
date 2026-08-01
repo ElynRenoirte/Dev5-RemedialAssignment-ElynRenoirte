@@ -1,5 +1,22 @@
 const API_URL = "http://localhost:3000/api";
 
+const user = JSON.parse(localStorage.getItem("neighborhood-watch-user") || "null");
+if (!user) {
+	window.location.replace("login.html");
+}
+
+const logoutLink = document.getElementById("logout");
+logoutLink.textContent = `Log out (${user.name})`;
+logoutLink.addEventListener("click", () => localStorage.removeItem("neighborhood-watch-user"));
+
+const userIdField = document.getElementById("user-id");
+userIdField.value = user.id;
+userIdField.type = "hidden";
+const userIdLabel = document.querySelector('label[for="user-id"]');
+if (userIdLabel) {
+	userIdLabel.remove();
+}
+
 //building the map
 const map = L.map("map").setView([51.05, 3.72], 13);
 
@@ -72,7 +89,7 @@ document.getElementById("report-form").addEventListener("submit", async (event) 
 	const form = event.target;
 
 	const payload = {
-		userId: Number(form.userId.value),
+		userId: user.id,
 		categoryId: form.categoryId.value ? Number(form.categoryId.value) : null,
 		personName: form.personName.value,
 		description: form.description.value,

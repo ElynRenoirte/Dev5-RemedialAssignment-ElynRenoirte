@@ -25,12 +25,20 @@ async function findByEmail(email) {
 	return rows[0] || null;
 }
 
+async function findByName(name) {
+	const [rows] = await pool.query(
+		"SELECT id, name, email FROM users WHERE LOWER(name) = LOWER(?)",
+		[name]
+	);
+	return rows[0] || null;
+}
+
 async function create({ name, email }) {
 	const [result] = await pool.query(
 		"INSERT INTO users (name, email) VALUES (?, ?)",
-		[name, email]
+		[name, email || null]
 	);
 	return findById(result.insertId);
 }
 
-module.exports = { findAll, findById, findByEmail, create };
+module.exports = { findAll, findById, findByEmail, findByName, create };

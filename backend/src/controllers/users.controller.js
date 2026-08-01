@@ -1,6 +1,6 @@
 //receive http requests, send http responses
 const usersService = require("../services/users.service");
-const { validateUser } = require("../middleware/validation");
+const { validateUser, validateLogin } = require("../middleware/validation");
 
 async function getAll(req, res) {
 	res.json(await usersService.getAll());
@@ -26,4 +26,14 @@ async function getReports(req, res) {
 	res.json(await usersService.getReports(req.params.id));
 }
 
-module.exports = { getAll, getById, create, getReports };
+//log in with a name, creating the user on first login
+async function login(req, res) {
+	const { errors, value } = validateLogin(req.body);
+	if (errors.length > 0) {
+		res.status(400).json({ errors });
+		return;
+	}
+	res.json(await usersService.login(value.name));
+}
+
+module.exports = { getAll, getById, create, getReports, login };

@@ -35,11 +35,24 @@ function validateUser(body) {
 	if (!name || name.length < 2 || name.length > 100) {
 		errors.push("name is required and must be 2-100 characters long");
 	}
-	if (!isValidEmail(email)) {
-		errors.push("a valid email is required");
+	if (email && !isValidEmail(email)) {
+		errors.push("email must be a valid email address");
 	}
 
-	return { errors, value: { name, email } };
+	return { errors, value: { name, email: email || null } };
+}
+
+//validates login (a name is the only requirement)
+function validateLogin(body) {
+	const errors = [];
+	body = body || {};
+	const name = typeof body.name === "string" ? body.name.trim() : "";
+
+	if (!name || name.length < 2 || name.length > 100) {
+		errors.push("name is required and must be 2-100 characters long");
+	}
+
+	return { errors, value: { name } };
 }
 
 //validates neighborhood report
@@ -111,6 +124,7 @@ function validatePerson(body) {
 module.exports = {
 	validateId,
 	validateUser,
+	validateLogin,
 	validateReport,
 	validateCategory,
 	validatePerson,

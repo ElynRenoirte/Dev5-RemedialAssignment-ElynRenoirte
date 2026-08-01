@@ -31,4 +31,13 @@ async function getReports(id) {
 	return reportsRepository.findByUser(id);
 }
 
-module.exports = { getAll, getById, create, getReports };
+//find the user by name or create them on first login
+async function login(name) {
+	const existing = await usersRepository.findByName(name);
+	if (existing) {
+		return existing;
+	}
+	return usersRepository.create({ name });
+}
+
+module.exports = { getAll, getById, create, getReports, login };
