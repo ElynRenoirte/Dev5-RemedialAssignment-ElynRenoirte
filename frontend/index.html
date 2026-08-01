@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Neighborhood Watch</title>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<header class="header">
+			<h1>Neighborhood Watch</h1>
+			<p>Register and follow sightings in your neighborhood</p>
+		</header>
+
+		<main class="layout">
+			<section class="map-panel">
+				<h2>Map</h2>
+				<div id="map" class="map-placeholder">
+					<p>Map placeholder</p>
+				</div>
+			</section>
+
+			<aside class="side-panel">
+				<section class="report-form">
+					<h2>Report a sighting</h2>
+					<form id="report-form">
+						<label for="user-id">Your user id</label>
+						<input type="number" id="user-id" name="userId" min="1" required />
+
+						<label for="person-name">Who did you see?</label>
+						<input type="text" id="person-name" name="personName" maxlength="100" required />
+
+						<label for="category">Category</label>
+						<select id="category" name="categoryId">
+							<option value="">-- choose a category --</option>
+						</select>
+
+						<label for="description">Description</label>
+						<textarea id="description" name="description" rows="4" minlength="5" maxlength="2000" required></textarea>
+
+						<fieldset class="coords">
+							<legend>Location</legend>
+							<label for="latitude">Latitude</label>
+							<input type="number" id="latitude" name="latitude" step="any" min="-90" max="90" required />
+							<label for="longitude">Longitude</label>
+							<input type="number" id="longitude" name="longitude" step="any" min="-180" max="180" required />
+						</fieldset>
+
+						<label for="direction">Direction (optional)</label>
+						<input type="text" id="direction" name="direction" maxlength="2" placeholder="N, NE, SSE ..." />
+
+						<button type="submit">Submit report</button>
+					</form>
+				</section>
+
+				<section class="recent-reports">
+					<h2>Recent reports</h2>
+					<ul id="recent-reports" class="report-list">
+						<li>No reports yet.</li>
+					</ul>
+				</section>
+			</aside>
+		</main>
+	</body>
+</html>

@@ -65,4 +65,9 @@ waitForDatabase()
 		process.exit(1);
 	});
 
+app.post("/users", (req, res) => {
+	res.json({
+		message: "User created",
+	});
+});
 
