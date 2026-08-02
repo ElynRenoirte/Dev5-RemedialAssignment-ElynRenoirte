@@ -14,12 +14,7 @@ function isValidLongitude(value) {
 const GHENT_BOUNDS = { latMin: 50.95, latMax: 51.15, lngMin: 3.6, lngMax: 3.85 };
 
 function isNearGhent(latitude, longitude) {
-	return (
-		latitude >= GHENT_BOUNDS.latMin &&
-		latitude <= GHENT_BOUNDS.latMax &&
-		longitude >= GHENT_BOUNDS.lngMin &&
-		longitude <= GHENT_BOUNDS.lngMax
-	);
+	return latitude >= GHENT_BOUNDS.latMin && latitude <= GHENT_BOUNDS.latMax && longitude >= GHENT_BOUNDS.lngMin && longitude <= GHENT_BOUNDS.lngMax;
 }
 
 function isValidEmail(value) {
