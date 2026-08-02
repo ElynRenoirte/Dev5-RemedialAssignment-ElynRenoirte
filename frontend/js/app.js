@@ -150,11 +150,13 @@ function renderStats(stats) {
 		li.textContent = `${item.name || "uncategorized"} - ${item.report_count}`;
 	});
 
-	//areas are clickable and move the map there
+	//areas are named places and clickable to move the map there
 	fillList("stat-areas", stats.topAreas, (li, item) => {
-		li.textContent = `${item.latitude}, ${item.longitude} - ${item.report_count}`;
-		li.classList.add("stat-area");
-		li.addEventListener("click", () => map.setView([item.latitude, item.longitude], 14));
+		li.textContent = `${item.name} - ${item.report_count}`;
+		if (item.latitude != null && item.longitude != null) {
+			li.classList.add("stat-area");
+			li.addEventListener("click", () => map.setView([item.latitude, item.longitude], 14));
+		}
 	});
 }
 
