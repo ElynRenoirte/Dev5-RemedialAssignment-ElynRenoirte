@@ -28,6 +28,32 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 		'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
+//the reporting area: in and around Ghent
+const GHENT_SW = { lat: 50.95, lng: 3.6 };
+const GHENT_NE = { lat: 51.15, lng: 3.85 };
+const GHENT_BOUNDS = L.latLngBounds(
+	L.latLng(GHENT_SW.lat, GHENT_SW.lng),
+	L.latLng(GHENT_NE.lat, GHENT_NE.lng)
+);
+
+//users can only look at and report within this area
+map.setMaxBounds(GHENT_BOUNDS);
+map.setMinZoom(12);
+
+L.rectangle(GHENT_BOUNDS, {
+	color: "#6b7280",
+	weight: 1,
+	dashArray: "4 4",
+	fill: false,
+}).addTo(map);
+
+function isNearGhent(lat, lng) {
+	return (
+		lat >= GHENT_SW.lat && lat <= GHENT_NE.lat &&
+		lng >= GHENT_SW.lng && lng <= GHENT_NE.lng
+	);
+}
+
 const reportLayer = L.layerGroup().addTo(map);
 
 const colorByCategory = {
@@ -122,6 +148,12 @@ async function loadCategories() {
 const form = document.getElementById("report-form");
 const formError = document.getElementById("form-error");
 
+//pick the location by clicking on the map (always inside the Ghent area)
+map.on("click", (event) => {
+	form.latitude.value = event.latlng.lat.toFixed(6);
+	form.longitude.value = event.latlng.lng.toFixed(6);
+});
+
 function showError(message) {
 	formError.textContent = message;
 	formError.hidden = false;
@@ -146,6 +178,11 @@ form.addEventListener("submit", async (event) => {
 		longitude: Number(form.longitude.value),
 		direction: form.direction.value.trim().toUpperCase() || null,
 	};
+
+	if (!isNearGhent(payload.latitude, payload.longitude)) {
+		showError("The location must be in or around Ghent.");
+		return;
+	}
 
 	try {
 		const res = await fetch(`${API_URL}/reports`, {

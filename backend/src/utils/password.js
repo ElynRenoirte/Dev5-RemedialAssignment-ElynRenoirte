@@ -1,4 +1,4 @@
-//hashes and verifies passwords 
+//hashes and verifies passwords chosen by users
 const crypto = require("crypto");
 
 const KEY_LENGTH = 64;

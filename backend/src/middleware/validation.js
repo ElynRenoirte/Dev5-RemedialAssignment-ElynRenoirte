@@ -10,6 +10,18 @@ function isValidLongitude(value) {
 	return Number.isFinite(value) && value >= -180 && value <= 180;
 }
 
+//the reporting area: in and around Ghent
+const GHENT_BOUNDS = { latMin: 50.95, latMax: 51.15, lngMin: 3.6, lngMax: 3.85 };
+
+function isNearGhent(latitude, longitude) {
+	return (
+		latitude >= GHENT_BOUNDS.latMin &&
+		latitude <= GHENT_BOUNDS.latMax &&
+		longitude >= GHENT_BOUNDS.lngMin &&
+		longitude <= GHENT_BOUNDS.lngMax
+	);
+}
+
 function isValidEmail(value) {
 	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
@@ -88,6 +100,9 @@ function validateReport(body) {
 	}
 	if (!isValidLongitude(longitude)) {
 		errors.push("longitude must be a number between -180 and 180");
+	}
+	if (!isNearGhent(latitude, longitude)) {
+		errors.push("location must be in or around Ghent");
 	}
 	if (direction && !COMPASS_PATTERN.test(direction)) {
 		errors.push("direction must be a compass direction like N, NE or SSE");
