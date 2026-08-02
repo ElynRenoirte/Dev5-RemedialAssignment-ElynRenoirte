@@ -12,6 +12,10 @@ const NAMED_PLACES = [
 	{ name: "graslei", latitude: 51.0547, longitude: 3.7211 },
 	{ name: "bijloke", latitude: 51.0439, longitude: 3.7163 },
 	{ name: "blaarmeersen", latitude: 51.0446, longitude: 3.6878 },
+	{ name: "ekkergem", latitude: 51.0511, longitude: 3.7055 },
+	{ name: "gentbrugge", latitude: 51.0443, longitude: 51.0443 },
+	{ name: "ledeberg", latitude: 51.0369, longitude: 3.7415 },
+	{ name: "oostakker", latitude: 51.1, longitude: 3.7628 },
 ];
 
 //reports further than this (in km) from any named place are grouped as "other"
@@ -25,12 +29,7 @@ function distanceKm(lat1, lng1, lat2, lng2) {
 	const earthRadiusKm = 6371;
 	const dLat = toRadians(lat2 - lat1);
 	const dLng = toRadians(lng2 - lng1);
-	const a =
-		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		Math.cos(toRadians(lat1)) *
-			Math.cos(toRadians(lat2)) *
-			Math.sin(dLng / 2) *
-			Math.sin(dLng / 2);
+	const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
 	return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -66,25 +65,17 @@ const REPORT_JOINS = `
 `;
 
 async function findAll() {
-	const [rows] = await pool.query(
-		`SELECT ${REPORT_COLUMNS} ${REPORT_JOINS} ORDER BY r.created_at DESC`
-	);
+	const [rows] = await pool.query(`SELECT ${REPORT_COLUMNS} ${REPORT_JOINS} ORDER BY r.created_at DESC`);
 	return rows;
 }
 
 async function findById(id) {
-	const [rows] = await pool.query(
-		`SELECT ${REPORT_COLUMNS} ${REPORT_JOINS} WHERE r.id = ?`,
-		[id]
-	);
+	const [rows] = await pool.query(`SELECT ${REPORT_COLUMNS} ${REPORT_JOINS} WHERE r.id = ?`, [id]);
 	return rows[0] || null;
 }
 
 async function findByUser(userId) {
-	const [rows] = await pool.query(
-		`SELECT ${REPORT_COLUMNS} ${REPORT_JOINS} WHERE r.user_id = ? ORDER BY r.created_at DESC`,
-		[userId]
-	);
+	const [rows] = await pool.query(`SELECT ${REPORT_COLUMNS} ${REPORT_JOINS} WHERE r.user_id = ? ORDER BY r.created_at DESC`, [userId]);
 	return rows;
 }
 
@@ -98,7 +89,7 @@ async function getStats() {
 		 JOIN users u ON u.id = r.user_id
 		 GROUP BY u.id, u.name
 		 ORDER BY report_count DESC, u.name
-		 LIMIT 5`
+		 LIMIT 5`,
 	);
 
 	const [mostReportedPersons] = await pool.query(
@@ -107,7 +98,7 @@ async function getStats() {
 		 JOIN persons p ON p.id = r.person_id
 		 GROUP BY p.id, p.name
 		 ORDER BY report_count DESC, p.name
-		 LIMIT 5`
+		 LIMIT 5`,
 	);
 
 	const [byCategory] = await pool.query(
@@ -115,7 +106,7 @@ async function getStats() {
 		 FROM reports r
 		 LEFT JOIN categories c ON c.id = r.category_id
 		 GROUP BY c.id, c.name
-		 ORDER BY report_count DESC, c.name`
+		 ORDER BY report_count DESC, c.name`,
 	);
 
 	//most reported areas, each report is matched to the nearest named place
@@ -155,15 +146,7 @@ async function create(report) {
 		`INSERT INTO reports
 			(user_id, category_id, person_id, description, latitude, longitude, direction)
 		 VALUES (?, ?, ?, ?, ?, ?, ?)`,
-		[
-			report.user_id,
-			report.category_id,
-			report.person_id,
-			report.description,
-			report.latitude,
-			report.longitude,
-			report.direction,
-		]
+		[report.user_id, report.category_id, report.person_id, report.description, report.latitude, report.longitude, report.direction],
 	);
 	return findById(result.insertId);
 }
