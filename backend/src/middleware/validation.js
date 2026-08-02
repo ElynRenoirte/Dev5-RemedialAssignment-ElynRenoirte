@@ -52,8 +52,8 @@ function validateLogin(body) {
 	if (!name || name.length < 2 || name.length > 100) {
 		errors.push("name is required and must be 2-100 characters long");
 	}
-	if (password.length < 6 || password.length > 100) {
-		errors.push("password is required and must be 6-100 characters long");
+	if (password.length < 3 || password.length > 100) {
+		errors.push("password is required and must be 3-100 characters long");
 	}
 
 	return { errors, value: { name, password } };
