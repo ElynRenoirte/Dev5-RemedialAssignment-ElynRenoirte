@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:3000/api";
 
+//the logged-in user saved by the login page
 const user = JSON.parse(localStorage.getItem("neighborhood-watch-user") || "null");
 if (!user) {
 	window.location.replace("login.html");
@@ -9,6 +10,7 @@ const logoutLink = document.getElementById("logout");
 logoutLink.textContent = `Log out (${user.name})`;
 logoutLink.addEventListener("click", () => localStorage.removeItem("neighborhood-watch-user"));
 
+//the user id comes from the logged-in user, not from the form
 const userIdField = document.getElementById("user-id");
 userIdField.value = user.id;
 userIdField.type = "hidden";
@@ -28,7 +30,20 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 const reportLayer = L.layerGroup().addTo(map);
 
-//adds dot when report is submitted
+const colorByCategory = {
+	stranger: "#dc2626",
+	thief: "#7f1d1d",
+	"missing person": "#2563eb",
+	suspicious: "#ea580c",
+	"known neighbor": "#16a34a",
+};
+const DEFAULT_COLOR = "#6b7280";
+
+function colorFor(categoryName) {
+	return colorByCategory[categoryName] || DEFAULT_COLOR;
+}
+
+//adds a dot on the map for a report
 function addReportDot(report) {
 	const lat = Number(report.latitude);
 	const lng = Number(report.longitude);
@@ -38,37 +53,57 @@ function addReportDot(report) {
 
 	const marker = L.circleMarker([lat, lng], {
 		radius: 8,
-		color: "#1e293b",
+		color: "#ffffff",
 		weight: 2,
-		fillColor: "#f59e0b",
+		fillColor: colorFor(report.category),
 		fillOpacity: 0.9,
 	}).addTo(reportLayer);
 
 	marker.bindPopup(
 		`<strong>${report.person || "Sighting"}</strong><br/>` +
+			`<strong>${report.category || "n/a"}</strong><br/>` +
 			`${report.description}<br/>` +
 			`<small>${report.reporter} &middot; ${new Date(report.created_at).toLocaleString()}</small>`
 	);
 }
 
-function fitBoundsToReports() {
-	if (reportLayer.getLayers().length > 0) {
-		map.fitBounds(reportLayer.getBounds(), { padding: [40, 40], maxZoom: 15 });
+//fills the "recent reports" list
+function renderRecentList(reports) {
+	const list = document.getElementById("recent-reports");
+	list.innerHTML = "";
+
+	if (reports.length === 0) {
+		list.innerHTML = "<li>No reports yet.</li>";
+		return;
 	}
+
+	reports.forEach((report) => {
+		const li = document.createElement("li");
+		const when = new Date(report.created_at).toLocaleString();
+		li.innerHTML =
+			`<strong>${report.person || "Sighting"}</strong> (${report.category || "n/a"})<br/>` +
+			`<small>${report.description}</small><br/>` +
+			`<small>${report.reporter} &middot; ${when}</small>`;
+		list.appendChild(li);
+	});
 }
 
-//loads reports
+function renderReports(reports) {
+	reportLayer.clearLayers();
+	reports.forEach(addReportDot);
+	renderRecentList(reports);
+}
+
+//loads all reports from the database
 async function loadReports() {
 	const res = await fetch(`${API_URL}/reports`);
 	if (!res.ok) {
 		throw new Error("Failed to load reports");
 	}
-	const reports = await res.json();
-	reports.forEach(addReportDot);
-	fitBoundsToReports();
+	renderReports(await res.json());
 }
 
-//loads categories
+//loads the categories into the dropdown
 async function loadCategories() {
 	const res = await fetch(`${API_URL}/categories`);
 	if (!res.ok) {
@@ -84,37 +119,60 @@ async function loadCategories() {
 	});
 }
 
-document.getElementById("report-form").addEventListener("submit", async (event) => {
+const form = document.getElementById("report-form");
+const formError = document.getElementById("form-error");
+
+function showError(message) {
+	formError.textContent = message;
+	formError.hidden = false;
+}
+
+function clearError() {
+	formError.hidden = true;
+	formError.textContent = "";
+}
+
+//submits a report: POST -> database -> dot appears on the map
+form.addEventListener("submit", async (event) => {
 	event.preventDefault();
-	const form = event.target;
+	clearError();
 
 	const payload = {
 		userId: user.id,
 		categoryId: form.categoryId.value ? Number(form.categoryId.value) : null,
-		personName: form.personName.value,
-		description: form.description.value,
+		personName: form.personName.value.trim(),
+		description: form.description.value.trim(),
 		latitude: Number(form.latitude.value),
 		longitude: Number(form.longitude.value),
-		direction: form.direction.value || null,
+		direction: form.direction.value.trim().toUpperCase() || null,
 	};
 
-	const res = await fetch(`${API_URL}/reports`, {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(payload),
-	});
+	try {
+		const res = await fetch(`${API_URL}/reports`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(payload),
+		});
 
-	if (!res.ok) {
-		const err = await res.json().catch(() => ({}));
-		alert(err.error || JSON.stringify(err.errors || err));
-		return;
+		if (!res.ok) {
+			const err = await res.json().catch(() => ({}));
+			showError(err.error || (err.errors ? err.errors.join("\n") : "Something went wrong"));
+			return;
+		}
+
+		//reload from the database so map + recent list show the new report
+		const reports = await (await fetch(`${API_URL}/reports`)).json();
+		renderReports(reports);
+		map.setView([payload.latitude, payload.longitude], 15);
+		form.reset();
+
+		//form.reset() re-shows the user id field, so hide it again
+		userIdField.value = user.id;
+		userIdField.type = "hidden";
+	} catch (err) {
+		showError(`Could not reach the server: ${err.message}`);
 	}
-
-	const report = await res.json();
-	addReportDot(report);
-	fitBoundsToReports();
-	form.reset();
 });
 
-loadReports().catch((err) => console.error(err));
+loadReports().catch((err) => showError(`Could not load reports: ${err.message}`));
 loadCategories().catch((err) => console.error(err));
