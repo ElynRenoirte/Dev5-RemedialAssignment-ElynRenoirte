@@ -26,14 +26,14 @@ async function getReports(req, res) {
 	res.json(await usersService.getReports(req.params.id));
 }
 
-//log in with a name, creating the user on first login
+//log in with a name and password, creating the user on first login
 async function login(req, res) {
 	const { errors, value } = validateLogin(req.body);
 	if (errors.length > 0) {
 		res.status(400).json({ errors });
 		return;
 	}
-	res.json(await usersService.login(value.name));
+	res.json(await usersService.login(value.name, value.password));
 }
 
 module.exports = { getAll, getById, create, getReports, login };

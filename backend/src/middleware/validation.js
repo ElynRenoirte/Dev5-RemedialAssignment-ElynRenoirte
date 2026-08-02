@@ -14,7 +14,7 @@ function isValidEmail(value) {
 	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-//Ensures a route parameter like /users/:id is a positive integer.
+//ensures a route parameter like /users/:id is a positive integer.
 function validateId(req, res, next) {
 	const id = Number(req.params.id);
 	if (!Number.isInteger(id) || id <= 0) {
@@ -42,17 +42,21 @@ function validateUser(body) {
 	return { errors, value: { name, email: email || null } };
 }
 
-//validates login (a name is the only requirement)
+//validates login (a name and password are required)
 function validateLogin(body) {
 	const errors = [];
 	body = body || {};
 	const name = typeof body.name === "string" ? body.name.trim() : "";
+	const password = typeof body.password === "string" ? body.password : "";
 
 	if (!name || name.length < 2 || name.length > 100) {
 		errors.push("name is required and must be 2-100 characters long");
 	}
+	if (password.length < 6 || password.length > 100) {
+		errors.push("password is required and must be 6-100 characters long");
+	}
 
-	return { errors, value: { name } };
+	return { errors, value: { name, password } };
 }
 
 //validates neighborhood report

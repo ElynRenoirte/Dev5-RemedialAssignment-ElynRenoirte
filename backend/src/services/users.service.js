@@ -1,6 +1,7 @@
 //contains application logic, how it gets/saves data in mysql
 const usersRepository = require("../repositories/users.repository");
 const reportsRepository = require("../repositories/reports.repository");
+const { hashPassword, verifyPassword } = require("../utils/password");
 const { httpError } = require("../utils/httpError");
 
 //get all users
@@ -31,13 +32,19 @@ async function getReports(id) {
 	return reportsRepository.findByUser(id);
 }
 
-//find the user by name or create them on first login
-async function login(name) {
+//log in by name and password; registers the account on first login
+async function login(name, password) {
 	const existing = await usersRepository.findByName(name);
 	if (existing) {
-		return existing;
+		const valid = await verifyPassword(password, existing.password_hash);
+		if (!valid) {
+			throw httpError(401, "Invalid name or password");
+		}
+		const { password_hash, ...user } = existing;
+		return user;
 	}
-	return usersRepository.create({ name });
+	const passwordHash = await hashPassword(password);
+	return usersRepository.create({ name, passwordHash });
 }
 
 module.exports = { getAll, getById, create, getReports, login };

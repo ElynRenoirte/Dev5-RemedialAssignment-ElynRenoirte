@@ -10,7 +10,7 @@ document.getElementById("login-form").addEventListener("submit", async (event) =
 	const res = await fetch(`${API_URL}/users/login`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ name: form.name.value }),
+		body: JSON.stringify({ name: form.name.value, password: form.password.value }),
 	});
 
 	if (!res.ok) {

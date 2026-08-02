@@ -27,16 +27,16 @@ async function findByEmail(email) {
 
 async function findByName(name) {
 	const [rows] = await pool.query(
-		"SELECT id, name, email FROM users WHERE LOWER(name) = LOWER(?)",
+		"SELECT id, name, email, password_hash FROM users WHERE LOWER(name) = LOWER(?)",
 		[name]
 	);
 	return rows[0] || null;
 }
 
-async function create({ name, email }) {
+async function create({ name, email, passwordHash }) {
 	const [result] = await pool.query(
-		"INSERT INTO users (name, email) VALUES (?, ?)",
-		[name, email || null]
+		"INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+		[name, email || null, passwordHash || null]
 	);
 	return findById(result.insertId);
 }
