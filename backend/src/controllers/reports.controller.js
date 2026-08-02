@@ -10,6 +10,10 @@ async function getById(req, res) {
 	res.json(await reportsService.getById(req.params.id));
 }
 
+async function getStats(req, res) {
+	res.json(await reportsService.getStats());
+}
+
 //check for validation errors
 async function create(req, res) {
 	const { errors, value } = validateReport(req.body);
@@ -21,4 +25,4 @@ async function create(req, res) {
 	res.status(201).json(await reportsService.create(value));
 }
 
-module.exports = { getAll, getById, create };
+module.exports = { getAll, getById, getStats, create };

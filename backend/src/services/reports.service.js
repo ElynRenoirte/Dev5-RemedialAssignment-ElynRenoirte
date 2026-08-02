@@ -18,6 +18,11 @@ async function getById(id) {
 	return report;
 }
 
+//get aggregate statistics derived from the reports
+async function getStats() {
+	return reportsRepository.getStats();
+}
+
 //checks the referenced rows exist before inserting, so bad data never reaches the DB.
 async function create(reportData) {
 	if (!(await usersRepository.findById(reportData.userId))) {
@@ -40,4 +45,4 @@ async function create(reportData) {
 	});
 }
 
-module.exports = { getAll, getById, create };
+module.exports = { getAll, getById, getStats, create };

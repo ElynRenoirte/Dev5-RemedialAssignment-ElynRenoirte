@@ -120,6 +120,52 @@ function renderReports(reports) {
 	renderRecentList(reports);
 }
 
+//renders the statistics under the map, re-fetches after every report submit so the statistics change live as data is added
+function renderStats(stats) {
+	document.getElementById("stat-total").textContent = stats.totalReports;
+
+	const fillList = (elementId, items, format) => {
+		const el = document.getElementById(elementId);
+		el.innerHTML = "";
+		if (items.length === 0) {
+			el.innerHTML = "<li>No data yet.</li>";
+			return;
+		}
+		items.forEach((item) => {
+			const li = document.createElement("li");
+			format(li, item);
+			el.appendChild(li);
+		});
+	};
+
+	fillList("stat-users", stats.activeUsers, (li, item) => {
+		li.textContent = `${item.name} - ${item.report_count}`;
+	});
+
+	fillList("stat-persons", stats.mostReportedPersons, (li, item) => {
+		li.textContent = `${item.name} - ${item.report_count}`;
+	});
+
+	fillList("stat-categories", stats.byCategory, (li, item) => {
+		li.textContent = `${item.name || "uncategorized"} - ${item.report_count}`;
+	});
+
+	//areas are clickable and move the map there
+	fillList("stat-areas", stats.topAreas, (li, item) => {
+		li.textContent = `${item.latitude}, ${item.longitude} - ${item.report_count}`;
+		li.classList.add("stat-area");
+		li.addEventListener("click", () => map.setView([item.latitude, item.longitude], 14));
+	});
+}
+
+async function loadStats() {
+	const res = await fetch(`${API_URL}/reports/stats`);
+	if (!res.ok) {
+		throw new Error("Failed to load stats");
+	}
+	renderStats(await res.json());
+}
+
 //loads all reports from the database
 async function loadReports() {
 	const res = await fetch(`${API_URL}/reports`);
@@ -197,9 +243,10 @@ form.addEventListener("submit", async (event) => {
 			return;
 		}
 
-		//reload from the database so map + recent list show the new report
+		//reload from the database so map, recent list and stats show the new report
 		const reports = await (await fetch(`${API_URL}/reports`)).json();
 		renderReports(reports);
+		loadStats().catch(() => {});
 		map.setView([payload.latitude, payload.longitude], 15);
 		form.reset();
 
@@ -212,4 +259,5 @@ form.addEventListener("submit", async (event) => {
 });
 
 loadReports().catch((err) => showError(`Could not load reports: ${err.message}`));
+loadStats().catch((err) => showError(`Could not load statistics: ${err.message}`)); //re-fetches after every report submit, so the statistics change live as data is added
 loadCategories().catch((err) => console.error(err));
