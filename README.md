@@ -15,9 +15,8 @@ explanation of project
 This project is licensed under the MIT License. See LICENSE file. 
 
 
-license
-code of conduct
+
 contribution guidelines
-readme
+
 
 changelog
