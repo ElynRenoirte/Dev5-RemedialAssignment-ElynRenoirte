@@ -45,23 +45,23 @@ The frontend will be available at http://localhost:8080 and the backend at http:
 
 3. log in with your name and use a random password (not one you already use)
 
-4. Once logged in you can fill in the form. For the location you can just click on the map, you don't need to write a longitude and a latitude yourself. 
+4. Once logged in you can fill in the form. For the location you can just click on the map, you don't need to write a longitude and a latitude yourself.
 
 5. When you click on submit report, what you filled in gets added to the database with your UID. It then gets added to the statistics under the map.
 
-## API endpoints 
+## API endpoints
 
 The backend runs at http://localhost:3000.
 
 ### Users
 
-| Method | Endpoint | Description |
-| ------ | -------- | ----------- |
-| GET | `/api/users` | Get all users |
-| GET | `/api/users/:id` | Get a single user by id |
-| GET | `/api/users/:id/reports` | Get all reports of a user |
-| POST | `/api/users` | Create a user |
-| POST | `/api/users/login` | Log in with a name and password |
+| Method | Endpoint                 | Description                     |
+| ------ | ------------------------ | ------------------------------- |
+| GET    | `/api/users`             | Get all users                   |
+| GET    | `/api/users/:id`         | Get a single user by id         |
+| GET    | `/api/users/:id/reports` | Get all reports of a user       |
+| POST   | `/api/users`             | Create a user                   |
+| POST   | `/api/users/login`       | Log in with a name and password |
 
 `POST /api/users` body: `{ "name": "John Doe", "email": "john@example.com" }` (email optional)
 
@@ -69,14 +69,15 @@ The backend runs at http://localhost:3000.
 
 ### Reports
 
-| Method | Endpoint | Description |
-| ------ | -------- | ----------- |
-| GET | `/api/reports` | Get all reports |
-| GET | `/api/reports/:id` | Get a single report by id |
-| GET | `/api/reports/stats` | Get statistics about the reports |
-| POST | `/api/reports` | Create a new report |
+| Method | Endpoint             | Description                      |
+| ------ | -------------------- | -------------------------------- |
+| GET    | `/api/reports`       | Get all reports                  |
+| GET    | `/api/reports/:id`   | Get a single report by id        |
+| GET    | `/api/reports/stats` | Get statistics about the reports |
+| POST   | `/api/reports`       | Create a new report              |
 
 `POST /api/reports` body:
+
 ```
 {
   "userId": 1,
@@ -91,34 +92,34 @@ The backend runs at http://localhost:3000.
 
 ### Persons
 
-| Method | Endpoint | Description |
-| ------ | -------- | ----------- |
-| GET | `/api/persons` | Get all persons |
-| GET | `/api/persons/:id` | Get a single person by id |
-| GET | `/api/persons/:id/trajectory` | Get the trajectory (sightings) of a person |
-| POST | `/api/persons` | Create a person |
+| Method | Endpoint                      | Description                                |
+| ------ | ----------------------------- | ------------------------------------------ |
+| GET    | `/api/persons`                | Get all persons                            |
+| GET    | `/api/persons/:id`            | Get a single person by id                  |
+| GET    | `/api/persons/:id/trajectory` | Get the trajectory (sightings) of a person |
+| POST   | `/api/persons`                | Create a person                            |
 
 `POST /api/persons` body: `{ "name": "Man in blue jacket" }`
 
 ### Categories
 
-| Method | Endpoint | Description |
-| ------ | -------- | ----------- |
-| GET | `/api/categories` | Get all categories |
-| POST | `/api/categories` | Create a category |
+| Method | Endpoint          | Description        |
+| ------ | ----------------- | ------------------ |
+| GET    | `/api/categories` | Get all categories |
+| POST   | `/api/categories` | Create a category  |
 
 `POST /api/categories` body: `{ "name": "suspicious" }`
 
 ### Other
 
-| Method | Endpoint | Description |
-| ------ | -------- | ----------- |
-| GET | `/` | API info |
-| GET | `/health` | Health check (checks the database connection) |
+| Method | Endpoint  | Description                                   |
+| ------ | --------- | --------------------------------------------- |
+| GET    | `/`       | API info                                      |
+| GET    | `/health` | Health check (checks the database connection) |
 
 ## License
 
-This project is licensed under the MIT License. See LICENSE file. 
+This project is licensed under the MIT License. See LICENSE file.
 
 ## References
 
