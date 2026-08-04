@@ -7,7 +7,7 @@ This web application simulates surveillance in a neighborhood. By filling in a r
 - Database
 - Login system
 - Report system (form)
-- Map (with leaflet)
+- Interactive map (with Leaflet)
 - Statistics (visualization of the data)
 - A UID gets assigned everytime a user starts logs in, each user is stored in a database
 - Distinguishable users
@@ -123,7 +123,7 @@ This project is licensed under the MIT License. See LICENSE file.
 ## References
 
 - Videos on canvas to understand Docker and Open Sourcing
-- Opencode ai chat to help with code and fix bugs (for example login page and report system): https://opncd.ai/share/SAzxWv7d
+- Opencode ai chat to help with code, fix bugs and explain code (for example login page and report system): https://opncd.ai/share/SAzxWv7d
 - Leaflet for the interactive map: https://leafletjs.com/
 - Semantic versioning for changelog: https://semver.org/
 - Help with readme: https://www.markdownguide.org/basic-syntax/
